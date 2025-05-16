@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/sonner';
 import { UserRole } from '@/types';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const LoginPage = () => {
   const { login, isLoading } = useAuth();
@@ -54,17 +55,28 @@ const LoginPage = () => {
   };
   
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-blue-50 p-4">
-      <div className="w-full max-w-md">
+    <div className="relative flex h-screen w-full items-center justify-center p-4 overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute animate-spin-slow opacity-30 -inset-[40%] rounded-full bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-400"></div>
+        <div className="absolute animate-pulse opacity-20 -inset-[30%] rounded-full bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-400"></div>
+        <div className="absolute animate-bounce-slow opacity-10 -inset-[20%] rounded-full bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-400 delay-700"></div>
+      </div>
+      
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-blue-700">EduManagement</h1>
-          <p className="text-gray-600">Access your educational dashboard</p>
+          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-300">EduManagement</h1>
+          <p className="text-gray-600 dark:text-gray-300">Access your educational dashboard</p>
         </div>
         
-        <Card>
+        <Card className="backdrop-blur-md bg-white/90 dark:bg-gray-800/90 animate-fade-in shadow-xl">
           <CardHeader>
             <CardTitle className="text-2xl">Log in</CardTitle>
-            <CardDescription>
+            <CardDescription className="dark:text-gray-300">
               Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
@@ -87,6 +99,7 @@ const LoginPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
+                    className="bg-white/80 dark:bg-gray-700/80"
                   />
                 </div>
                 <div className="space-y-2">
@@ -99,6 +112,7 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     autoComplete="current-password"
+                    className="bg-white/80 dark:bg-gray-700/80"
                   />
                 </div>
                 
@@ -118,7 +132,7 @@ const LoginPage = () => {
                   </p>
                 </TabsContent>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" className="w-full hover:scale-105 transition-transform" disabled={isLoading}>
                   {isLoading ? 'Logging in...' : 'Log in'}
                 </Button>
               </form>

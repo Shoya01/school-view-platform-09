@@ -1,52 +1,89 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BookOpen, Calendar, CheckCircle, Users } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const heroRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -10% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in');
+          entry.target.classList.remove('opacity-0');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe sections
+    const sections = document.querySelectorAll('.animate-on-scroll');
+    sections.forEach(section => {
+      section.classList.add('opacity-0');
+      observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach(section => {
+        observer.unobserve(section);
+      });
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white transition-colors duration-300">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm">
+      <nav className="bg-white dark:bg-gray-800 shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-gray-900">EduManagement</h1>
+            <BookOpen className="h-8 w-8 text-primary dark:text-blue-300" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">EduManagement</h1>
           </div>
-          <Button 
-            onClick={() => navigate('/login')}
-            className="bg-primary hover:bg-primary/90"
-          >
-            Login <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <Button 
+              onClick={() => navigate('/login')}
+              className="bg-primary hover:bg-primary/90 hover:scale-105 transition-all"
+            >
+              Login <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24">
+      <section ref={heroRef} className="py-16 md:py-24 animate-on-scroll">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight animate-fade-in">
                 Modern Education Management Platform
               </h1>
-              <p className="mt-6 text-xl text-gray-700 max-w-lg">
+              <p className="mt-6 text-xl text-gray-700 dark:text-gray-300 max-w-lg animate-fade-in delay-300">
                 Streamlined attendance tracking, assignment management, and classroom communications for students, teachers, and administrators.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button 
                   onClick={() => navigate('/login')}
-                  className="w-full sm:w-auto text-lg px-8 py-6"
+                  className="w-full sm:w-auto text-lg px-8 py-6 hover:scale-105 transition-transform animate-fade-in delay-500"
                 >
                   Get Started
                 </Button>
               </div>
             </div>
             <div className="md:w-1/2">
-              <div className="relative rounded-lg overflow-hidden shadow-xl">
+              <div className="relative rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-fade-in delay-300">
                 <img 
                   src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
                   alt="Student using laptop" 
@@ -59,86 +96,86 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
+      <section ref={featuresRef} className="py-16 bg-white dark:bg-gray-800 transition-colors duration-300 animate-on-scroll">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
             Platform Features
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Student Features */}
-            <div className="bg-blue-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-14 w-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <Users className="h-7 w-7 text-primary" />
+            <div className="bg-blue-50 dark:bg-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover:scale-105 duration-300">
+              <div className="h-14 w-14 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center mb-4">
+                <Users className="h-7 w-7 text-primary dark:text-blue-300" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">For Students</h3>
-              <ul className="space-y-3 text-gray-700">
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">For Students</h3>
+              <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>View attendance records and statistics</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Access and submit assignments online</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Receive important class notices</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Track academic performance</span>
                 </li>
               </ul>
             </div>
             
             {/* Teacher Features */}
-            <div className="bg-blue-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-14 w-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="h-7 w-7 text-primary" />
+            <div className="bg-blue-50 dark:bg-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover:scale-105 duration-300">
+              <div className="h-14 w-14 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="h-7 w-7 text-primary dark:text-blue-300" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">For Teachers</h3>
-              <ul className="space-y-3 text-gray-700">
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">For Teachers</h3>
+              <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Manage classroom attendance easily</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Create and grade assignments</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Post important notices to classes</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Track student performance metrics</span>
                 </li>
               </ul>
             </div>
             
             {/* Admin Features */}
-            <div className="bg-blue-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-14 w-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <Calendar className="h-7 w-7 text-primary" />
+            <div className="bg-blue-50 dark:bg-gray-700 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover:scale-105 duration-300">
+              <div className="h-14 w-14 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center mb-4">
+                <Calendar className="h-7 w-7 text-primary dark:text-blue-300" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">For Administrators</h3>
-              <ul className="space-y-3 text-gray-700">
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">For Administrators</h3>
+              <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Oversee school operations</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Monitor teacher and student activity</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Generate and analyze reports</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2 mt-0.5 shrink-0" />
                   <span>Manage schoolwide announcements</span>
                 </li>
               </ul>
@@ -148,57 +185,57 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonial Section */}
-      <section className="py-16 bg-blue-50">
+      <section ref={testimonialsRef} className="py-16 bg-blue-50 dark:bg-gray-700 transition-colors duration-300 animate-on-scroll">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
             What Our Users Say
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <p className="text-gray-700 italic">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition-all hover:scale-105 duration-300">
+              <p className="text-gray-700 dark:text-gray-300 italic">
                 "This platform has made managing my classroom so much easier. I can track attendance and assignments all in one place."
               </p>
               <div className="mt-4 flex items-center">
-                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span className="font-medium text-primary">JS</span>
+                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center">
+                  <span className="font-medium text-primary dark:text-blue-300">JS</span>
                 </div>
                 <div className="ml-3">
-                  <p className="font-medium">Jane Smith</p>
-                  <p className="text-sm text-gray-500">Math Teacher</p>
+                  <p className="font-medium dark:text-white">Jane Smith</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Math Teacher</p>
                 </div>
               </div>
             </div>
             
             {/* Testimonial 2 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <p className="text-gray-700 italic">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition-all hover:scale-105 duration-300">
+              <p className="text-gray-700 dark:text-gray-300 italic">
                 "As a student, I love being able to see all my assignments and notices in one place. The interface is really easy to use."
               </p>
               <div className="mt-4 flex items-center">
-                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span className="font-medium text-primary">MJ</span>
+                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center">
+                  <span className="font-medium text-primary dark:text-blue-300">MJ</span>
                 </div>
                 <div className="ml-3">
-                  <p className="font-medium">Michael Johnson</p>
-                  <p className="text-sm text-gray-500">Student, Grade 10</p>
+                  <p className="font-medium dark:text-white">Michael Johnson</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Student, Grade 10</p>
                 </div>
               </div>
             </div>
             
             {/* Testimonial 3 */}
-            <div className="bg-white p-6 rounded-xl shadow">
-              <p className="text-gray-700 italic">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition-all hover:scale-105 duration-300">
+              <p className="text-gray-700 dark:text-gray-300 italic">
                 "The administrative tools have given me unprecedented visibility into our school's operations. It's been transformative."
               </p>
               <div className="mt-4 flex items-center">
-                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span className="font-medium text-primary">RP</span>
+                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center">
+                  <span className="font-medium text-primary dark:text-blue-300">RP</span>
                 </div>
                 <div className="ml-3">
-                  <p className="font-medium">Rachel Peterson</p>
-                  <p className="text-sm text-gray-500">School Principal</p>
+                  <p className="font-medium dark:text-white">Rachel Peterson</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">School Principal</p>
                 </div>
               </div>
             </div>
@@ -207,7 +244,7 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-white">
+      <section className="py-16 bg-primary text-white animate-on-scroll">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
           <p className="max-w-2xl mx-auto text-xl mb-8">
@@ -216,7 +253,7 @@ const LandingPage = () => {
           <Button 
             variant="outline" 
             onClick={() => navigate('/login')} 
-            className="border-white text-white hover:bg-white hover:text-primary px-8 py-6 text-lg"
+            className="border-white text-white hover:bg-white hover:text-primary px-8 py-6 text-lg hover:scale-105 transition-transform"
           >
             Login Now
           </Button>
