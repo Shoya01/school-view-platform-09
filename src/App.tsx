@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 import MainLayout from "@/components/layout/MainLayout";
+import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 
 // Student Pages
@@ -32,6 +33,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             
             {/* Protected routes */}
@@ -48,9 +50,6 @@ const App = () => (
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               {/* Add more admin routes as needed */}
             </Route>
-            
-            {/* Redirect from index to login */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
             
             {/* 404 route */}
             <Route path="*" element={<NotFound />} />
