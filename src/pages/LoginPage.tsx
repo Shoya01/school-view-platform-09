@@ -73,7 +73,12 @@ const LoginPage = () => {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-300">EduManagement</h1>
+          <h1 
+            className="text-3xl font-bold text-blue-700 dark:text-blue-300 cursor-pointer hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+            onClick={() => navigate('/')}
+          >
+            Northside Academy
+          </h1>
           <p className="text-gray-600 dark:text-gray-300">Access your educational dashboard</p>
         </div>
         
