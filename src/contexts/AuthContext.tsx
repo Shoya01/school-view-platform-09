@@ -8,6 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string, role: UserRole) => Promise<boolean>;
   logout: () => void;
+  requestPasswordReset: (email: string, role: UserRole) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -73,13 +74,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(null);
     localStorage.removeItem('eduAppUser');
   };
+  
+  const requestPasswordReset = async (email: string, role: UserRole): Promise<boolean> => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Check if user exists in mock data
+    const user = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase() && u.role === role);
+    
+    // In a real app, we would send a password reset email here
+    // For demo purposes, we'll just return true if the user exists
+    return !!user;
+  };
 
   const value = {
     currentUser,
     isAuthenticated: !!currentUser,
     isLoading,
     login,
-    logout
+    logout,
+    requestPasswordReset
   };
 
   return (
