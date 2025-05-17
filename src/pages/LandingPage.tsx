@@ -1,15 +1,17 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BookOpen, Calendar, CheckCircle, Users } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
+import EnrollmentForm from '@/components/EnrollmentForm';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
+  const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
 
   useEffect(() => {
     const observerOptions = {
@@ -43,6 +45,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white transition-colors duration-300">
+      <EnrollmentForm open={showEnrollmentForm} onOpenChange={setShowEnrollmentForm} />
+      
       {/* Navigation */}
       <nav className="bg-white dark:bg-gray-800 shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
@@ -52,6 +56,12 @@ const LandingPage = () => {
           </div>
           <div className="flex items-center space-x-4">
             <ThemeToggle />
+            <Button 
+              onClick={() => setShowEnrollmentForm(true)}
+              className="bg-green-500 hover:bg-green-600 hover:scale-105 transition-all"
+            >
+              Enroll Now
+            </Button>
             <Button 
               onClick={() => navigate('/login')}
               className="bg-primary hover:bg-primary/90 hover:scale-105 transition-all"
@@ -75,10 +85,17 @@ const LandingPage = () => {
               </p>
               <div className="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button 
+                  onClick={() => setShowEnrollmentForm(true)}
+                  className="w-full sm:w-auto text-lg px-8 py-6 bg-green-500 hover:bg-green-600 hover:scale-105 transition-transform animate-fade-in delay-500"
+                >
+                  Apply for Admission
+                </Button>
+                <Button 
                   onClick={() => navigate('/login')}
                   className="w-full sm:w-auto text-lg px-8 py-6 hover:scale-105 transition-transform animate-fade-in delay-500"
+                  variant="outline"
                 >
-                  Get Started
+                  Login to Dashboard
                 </Button>
               </div>
             </div>
@@ -250,13 +267,22 @@ const LandingPage = () => {
           <p className="max-w-2xl mx-auto text-xl mb-8">
             Join our platform today and experience the benefits of streamlined education management.
           </p>
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/login')} 
-            className="border-white text-white hover:bg-white hover:text-primary px-8 py-6 text-lg hover:scale-105 transition-transform"
-          >
-            Login Now
-          </Button>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowEnrollmentForm(true)} 
+              className="border-white text-white hover:bg-green-500 hover:border-green-500 hover:text-white px-8 py-6 text-lg hover:scale-105 transition-transform"
+            >
+              Enroll Now
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/login')} 
+              className="border-white text-white hover:bg-white hover:text-primary px-8 py-6 text-lg hover:scale-105 transition-transform"
+            >
+              Login
+            </Button>
+          </div>
         </div>
       </section>
 

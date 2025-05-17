@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/sonner';
 import { UserRole } from '@/types';
 import ThemeToggle from '@/components/ThemeToggle';
+import ForgotPasswordForm from '@/components/ForgotPasswordForm';
 
 const LoginPage = () => {
   const { login, isLoading } = useAuth();
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('student');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +58,8 @@ const LoginPage = () => {
   
   return (
     <div className="relative flex h-screen w-full items-center justify-center p-4 overflow-hidden">
+      <ForgotPasswordForm open={showForgotPassword} onOpenChange={setShowForgotPassword} />
+      
       {/* Animated background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute animate-spin-slow opacity-30 -inset-[40%] rounded-full bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-400"></div>
@@ -114,6 +118,16 @@ const LoginPage = () => {
                     autoComplete="current-password"
                     className="bg-white/80 dark:bg-gray-700/80"
                   />
+                </div>
+                
+                <div className="text-right">
+                  <button 
+                    type="button" 
+                    onClick={() => setShowForgotPassword(true)}
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    Forgot your password?
+                  </button>
                 </div>
                 
                 <TabsContent value="student">
