@@ -6,16 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Check, Calendar, User, Pin } from 'lucide-react';
+import { Check, Calendar, User, Pin, Eye, EyeOff } from 'lucide-react';
 import NoticeCategoryIcon from './NoticeCategoryIcon';
 
 interface NoticeCardProps {
   notice: Notice;
   isExpanded: boolean;
   onToggleExpand: () => void;
+  onMarkAsRead: (id: string, isRead: boolean) => void;
 }
 
-const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isExpanded, onToggleExpand }) => {
+const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isExpanded, onToggleExpand, onMarkAsRead }) => {
+  const handleToggleReadStatus = () => {
+    onMarkAsRead(notice.id, !notice.isRead);
+  };
+
   return (
     <Collapsible 
       open={isExpanded}
@@ -67,9 +72,23 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isExpanded, onToggleExp
         
         <CollapsibleContent>
           <CardFooter className="pt-0 pb-4 border-t flex justify-end gap-2">
-            <Button variant="outline" size="sm" className="gap-1">
-              <Check className="h-4 w-4" />
-              Mark as Read
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="gap-1"
+              onClick={handleToggleReadStatus}
+            >
+              {notice.isRead ? (
+                <>
+                  <EyeOff className="h-4 w-4" />
+                  Mark as Unread
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  Mark as Read
+                </>
+              )}
             </Button>
             <Button size="sm">View Details</Button>
           </CardFooter>

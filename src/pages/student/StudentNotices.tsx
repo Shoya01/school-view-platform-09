@@ -5,12 +5,14 @@ import { generateMockNotices } from '@/services/noticeService';
 import NoticeFilters from '@/components/student/NoticeFilters';
 import NoticeCard from '@/components/student/NoticeCard';
 import NoticeEmptyState from '@/components/student/NoticeEmptyState';
+import { useToast } from "@/hooks/use-toast";
 
 const StudentNotices = () => {
-  const [notices] = useState<Notice[]>(generateMockNotices());
+  const [notices, setNotices] = useState<Notice[]>(generateMockNotices());
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [expandedNotices, setExpandedNotices] = useState<string[]>([]);
+  const { toast } = useToast();
   
   // Toggle notice expanded state
   const toggleNoticeExpanded = (id: string) => {
@@ -19,6 +21,24 @@ const StudentNotices = () => {
         ? prev.filter(noticeId => noticeId !== id) 
         : [...prev, id]
     );
+  };
+  
+  // Handle marking notice as read/unread
+  const handleMarkAsRead = (id: string, isRead: boolean) => {
+    setNotices(prevNotices => 
+      prevNotices.map(notice => 
+        notice.id === id 
+          ? { ...notice, isRead } 
+          : notice
+      )
+    );
+    
+    // Show toast notification
+    toast({
+      title: isRead ? "Notice marked as read" : "Notice marked as unread",
+      description: "You can filter notices by read/unread status.",
+      duration: 3000,
+    });
   };
   
   // Filter notices based on search and active tab
@@ -74,6 +94,7 @@ const StudentNotices = () => {
               notice={notice} 
               isExpanded={expandedNotices.includes(notice.id)}
               onToggleExpand={() => toggleNoticeExpanded(notice.id)}
+              onMarkAsRead={handleMarkAsRead}
             />
           ))
         )}
