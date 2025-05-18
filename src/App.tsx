@@ -21,6 +21,11 @@ import StudentProfile from "@/pages/student/StudentProfile";
 
 // Teacher Pages
 import TeacherDashboard from "@/pages/teacher/TeacherDashboard";
+import TeacherAssignments from "@/pages/teacher/TeacherAssignments";
+import TeacherAttendance from "@/pages/teacher/TeacherAttendance";
+import TeacherNotices from "@/pages/teacher/TeacherNotices";
+import TeacherStudents from "@/pages/teacher/TeacherStudents";
+import TeacherProfile from "@/pages/teacher/TeacherProfile";
 
 // Admin Pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -58,7 +63,11 @@ const App: React.FC = () => {
                     
                     {/* Teacher routes */}
                     <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-                    {/* Add more teacher routes as needed */}
+                    <Route path="/teacher/assignments" element={<TeacherAssignments />} />
+                    <Route path="/teacher/attendance" element={<TeacherAttendance />} />
+                    <Route path="/teacher/notices" element={<TeacherNotices />} />
+                    <Route path="/teacher/students" element={<TeacherStudents />} />
+                    <Route path="/teacher/profile" element={<TeacherProfile />} />
                     
                     {/* Admin routes */}
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
