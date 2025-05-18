@@ -14,6 +14,10 @@ import LoginPage from "@/pages/LoginPage";
 
 // Student Pages
 import StudentDashboard from "@/pages/student/StudentDashboard";
+import StudentAssignments from "@/pages/student/StudentAssignments";
+import StudentAttendance from "@/pages/student/StudentAttendance";
+import StudentNotices from "@/pages/student/StudentNotices";
+import StudentProfile from "@/pages/student/StudentProfile";
 
 // Teacher Pages
 import TeacherDashboard from "@/pages/teacher/TeacherDashboard";
@@ -47,7 +51,10 @@ const App: React.FC = () => {
                   <Route element={<MainLayout />}>
                     {/* Student routes */}
                     <Route path="/student/dashboard" element={<StudentDashboard />} />
-                    {/* Add more student routes as needed */}
+                    <Route path="/student/assignments" element={<StudentAssignments />} />
+                    <Route path="/student/attendance" element={<StudentAttendance />} />
+                    <Route path="/student/notices" element={<StudentNotices />} />
+                    <Route path="/student/profile" element={<StudentProfile />} />
                     
                     {/* Teacher routes */}
                     <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
