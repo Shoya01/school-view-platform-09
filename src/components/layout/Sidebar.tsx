@@ -15,7 +15,8 @@ import {
   MessageSquare, 
   Settings, 
   User, 
-  Users 
+  Users,
+  BarChart
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -30,6 +31,7 @@ const Sidebar = () => {
     { icon: Book, label: 'Classes', href: '/admin/classes' },
     { icon: Calendar, label: 'Calendar', href: '/admin/calendar' },
     { icon: MessageSquare, label: 'Notices', href: '/admin/notices' },
+    { icon: BarChart, label: 'Reports', href: '/admin/reports' },
     { icon: Settings, label: 'Settings', href: '/admin/settings' },
   ];
 
@@ -39,6 +41,7 @@ const Sidebar = () => {
     { icon: FileText, label: 'Assignments', href: '/teacher/assignments' },
     { icon: Calendar, label: 'Attendance', href: '/teacher/attendance' },
     { icon: MessageSquare, label: 'Notices', href: '/teacher/notices' },
+    { icon: BarChart, label: 'Reports', href: '/teacher/reports' },
     { icon: Settings, label: 'Settings', href: '/teacher/settings' },
   ];
 
@@ -47,6 +50,7 @@ const Sidebar = () => {
     { icon: FileText, label: 'Assignments', href: '/student/assignments' },
     { icon: Calendar, label: 'Attendance', href: '/student/attendance' },
     { icon: MessageSquare, label: 'Notices', href: '/student/notices' },
+    { icon: BarChart, label: 'Reports', href: '/student/reports' },
     { icon: User, label: 'Profile', href: '/student/profile' },
   ];
 

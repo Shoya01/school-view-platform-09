@@ -15,6 +15,7 @@ const AdminDashboardTabs: React.FC = () => {
     if (currentPath.includes('/admin/classes')) return 'classes';
     if (currentPath.includes('/admin/notices')) return 'notices';
     if (currentPath.includes('/admin/reports')) return 'reports';
+    if (currentPath.includes('/admin/calendar')) return 'calendar';
     if (currentPath.includes('/admin/settings')) return 'settings';
     return 'overview'; // Default to overview tab
   };
@@ -39,6 +40,9 @@ const AdminDashboardTabs: React.FC = () => {
       case 'reports':
         navigate('/admin/reports');
         break;
+      case 'calendar':
+        navigate('/admin/calendar');
+        break;
       case 'settings':
         navigate('/admin/settings');
         break;
@@ -51,13 +55,14 @@ const AdminDashboardTabs: React.FC = () => {
       onValueChange={handleTabChange}
       className="w-full"
     >
-      <TabsList className="grid grid-cols-4 md:grid-cols-7 mb-4">
+      <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-4">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="teachers">Teachers</TabsTrigger>
         <TabsTrigger value="students">Students</TabsTrigger>
         <TabsTrigger value="classes">Classes</TabsTrigger>
         <TabsTrigger value="notices">Notices</TabsTrigger>
         <TabsTrigger value="reports">Reports</TabsTrigger>
+        <TabsTrigger value="calendar">Calendar</TabsTrigger>
         <TabsTrigger value="settings">Settings</TabsTrigger>
       </TabsList>
     </Tabs>

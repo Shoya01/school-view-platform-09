@@ -18,6 +18,7 @@ import StudentAssignments from "@/pages/student/StudentAssignments";
 import StudentAttendance from "@/pages/student/StudentAttendance";
 import StudentNotices from "@/pages/student/StudentNotices";
 import StudentProfile from "@/pages/student/StudentProfile";
+import StudentReports from "@/pages/student/StudentReports";
 
 // Teacher Pages
 import TeacherDashboard from "@/pages/teacher/TeacherDashboard";
@@ -26,6 +27,7 @@ import TeacherAttendance from "@/pages/teacher/TeacherAttendance";
 import TeacherNotices from "@/pages/teacher/TeacherNotices";
 import TeacherStudents from "@/pages/teacher/TeacherStudents";
 import TeacherProfile from "@/pages/teacher/TeacherProfile";
+import TeacherReports from "@/pages/teacher/TeacherReports";
 
 // Admin Pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -35,6 +37,7 @@ import AdminClasses from "@/pages/admin/AdminClasses";
 import AdminNotices from "@/pages/admin/AdminNotices";
 import AdminReports from "@/pages/admin/AdminReports";
 import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminCalendar from "@/pages/admin/AdminCalendar";
 
 // 404 Page
 import NotFound from "./pages/NotFound";
@@ -66,6 +69,7 @@ const App: React.FC = () => {
                     <Route path="/student/attendance" element={<StudentAttendance />} />
                     <Route path="/student/notices" element={<StudentNotices />} />
                     <Route path="/student/profile" element={<StudentProfile />} />
+                    <Route path="/student/reports" element={<StudentReports />} />
                     
                     {/* Teacher routes */}
                     <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
@@ -74,6 +78,7 @@ const App: React.FC = () => {
                     <Route path="/teacher/notices" element={<TeacherNotices />} />
                     <Route path="/teacher/students" element={<TeacherStudents />} />
                     <Route path="/teacher/profile" element={<TeacherProfile />} />
+                    <Route path="/teacher/reports" element={<TeacherReports />} />
                     
                     {/* Admin routes */}
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -82,6 +87,7 @@ const App: React.FC = () => {
                     <Route path="/admin/classes" element={<AdminClasses />} />
                     <Route path="/admin/notices" element={<AdminNotices />} />
                     <Route path="/admin/reports" element={<AdminReports />} />
+                    <Route path="/admin/calendar" element={<AdminCalendar />} />
                     <Route path="/admin/settings" element={<AdminSettings />} />
                   </Route>
                   
