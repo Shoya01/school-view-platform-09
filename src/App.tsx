@@ -29,6 +29,12 @@ import TeacherProfile from "@/pages/teacher/TeacherProfile";
 
 // Admin Pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminTeachers from "@/pages/admin/AdminTeachers";
+import AdminStudents from "@/pages/admin/AdminStudents";
+import AdminClasses from "@/pages/admin/AdminClasses";
+import AdminNotices from "@/pages/admin/AdminNotices";
+import AdminReports from "@/pages/admin/AdminReports";
+import AdminSettings from "@/pages/admin/AdminSettings";
 
 // 404 Page
 import NotFound from "./pages/NotFound";
@@ -71,7 +77,12 @@ const App: React.FC = () => {
                     
                     {/* Admin routes */}
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    {/* Add more admin routes as needed */}
+                    <Route path="/admin/teachers" element={<AdminTeachers />} />
+                    <Route path="/admin/students" element={<AdminStudents />} />
+                    <Route path="/admin/classes" element={<AdminClasses />} />
+                    <Route path="/admin/notices" element={<AdminNotices />} />
+                    <Route path="/admin/reports" element={<AdminReports />} />
+                    <Route path="/admin/settings" element={<AdminSettings />} />
                   </Route>
                   
                   {/* 404 route */}

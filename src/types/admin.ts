@@ -21,3 +21,29 @@ export interface SchoolNotice {
   date: string;
   important: boolean;
 }
+
+export interface TeacherData {
+  id: number;
+  name: string;
+  subject: string;
+  classes: string[];
+  status: 'active' | 'inactive' | 'on leave';
+}
+
+export interface StudentData {
+  id: number;
+  name: string;
+  class: string;
+  guardianName: string;
+  attendance: number;
+  status: 'active' | 'inactive' | 'suspended';
+}
+
+export interface ClassData {
+  id: number;
+  name: string;
+  teacher: string;
+  students: number;
+  capacity: number;
+  attendance: number;
+}

@@ -2,16 +2,16 @@
 import React from 'react';
 import AdminDashboardHeader from '@/components/admin/AdminDashboardHeader';
 import AdminDashboardTabs from '@/components/admin/AdminDashboardTabs';
-import { AdminDashboardContent } from '@/components/admin/AdminDashboardContent';
+import AdminStudentsManagement from '@/components/admin/AdminStudentsManagement';
 
-const AdminDashboard: React.FC = () => {
+const AdminStudents: React.FC = () => {
   return (
     <div className="space-y-6">
       <AdminDashboardHeader />
       <AdminDashboardTabs />
-      <AdminDashboardContent />
+      <AdminStudentsManagement />
     </div>
   );
 };
 
-export default AdminDashboard;
+export default AdminStudents;
