@@ -1,6 +1,5 @@
 
 import React from 'react';
-import StudentDashboardHeader from '@/components/student/DashboardHeader';
 import StudentReportsManagement from '@/components/student/StudentReportsManagement';
 
 const StudentReports: React.FC = () => {
