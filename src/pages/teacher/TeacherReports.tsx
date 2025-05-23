@@ -6,7 +6,7 @@ import TeacherReportsManagement from '@/components/teacher/TeacherReportsManagem
 
 const TeacherReports: React.FC = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <TeacherDashboardHeader />
       <TeacherDashboardTabs />
       <TeacherReportsManagement />

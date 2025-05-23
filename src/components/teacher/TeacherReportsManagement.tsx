@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Filter, BarChart, LineChart, PieChart, FileText } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   ResponsiveContainer, 
@@ -90,25 +90,6 @@ const TeacherReportsManagement: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="attendance">
-            <TabsList className="mb-4">
-              <TabsTrigger value="attendance" className="flex items-center">
-                <LineChart className="h-4 w-4 mr-2" />
-                Attendance
-              </TabsTrigger>
-              <TabsTrigger value="grades" className="flex items-center">
-                <BarChart className="h-4 w-4 mr-2" />
-                Grade Distribution
-              </TabsTrigger>
-              <TabsTrigger value="assignments" className="flex items-center">
-                <PieChart className="h-4 w-4 mr-2" />
-                Assignment Completion
-              </TabsTrigger>
-              <TabsTrigger value="students" className="flex items-center">
-                <FileText className="h-4 w-4 mr-2" />
-                Student Performance
-              </TabsTrigger>
-            </TabsList>
-            
             <TabsContent value="attendance">
               <Card>
                 <CardHeader>
@@ -196,7 +177,7 @@ const TeacherReportsManagement: React.FC = () => {
               </Card>
             </TabsContent>
             
-            <TabsContent value="students">
+            <TabsContent value="performance">
               <Card>
                 <CardHeader>
                   <CardTitle>Student Performance</CardTitle>

@@ -8,7 +8,32 @@ const TeacherDashboardTabs: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   
-  // Map routes to tab values
+  // Check if we're in the reports section
+  const isReportsSection = currentPath.includes('/teacher/reports');
+  
+  // If in reports section, show report-specific tabs
+  if (isReportsSection) {
+    return (
+      <Tabs defaultValue="attendance" className="w-full">
+        <TabsList className="grid grid-cols-4 mb-4">
+          <TabsTrigger value="attendance" className="flex items-center">
+            Attendance Reports
+          </TabsTrigger>
+          <TabsTrigger value="grades" className="flex items-center">
+            Grade Distribution
+          </TabsTrigger>
+          <TabsTrigger value="assignments" className="flex items-center">
+            Assignment Completion
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="flex items-center">
+            Student Performance
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    );
+  }
+  
+  // For other sections, map routes to tab values
   const getActiveTab = () => {
     if (currentPath.includes('/teacher/students')) return 'students';
     if (currentPath.includes('/teacher/assignments')) return 'assignments';

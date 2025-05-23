@@ -6,7 +6,7 @@ import AdminCalendarManagement from '@/components/admin/AdminCalendarManagement'
 
 const AdminCalendar: React.FC = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <AdminDashboardHeader />
       <AdminDashboardTabs />
       <AdminCalendarManagement />
