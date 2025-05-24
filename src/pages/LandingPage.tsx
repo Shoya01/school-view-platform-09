@@ -1,7 +1,8 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Calendar, CheckCircle, Users, GraduationCap, School, Star, Award, Target, Heart, Lightbulb, Globe, ChevronDown } from 'lucide-react';
+import { ArrowRight, BookOpen, Calendar, CheckCircle, Users, GraduationCap, School, Star, Award, Target, Heart, Lightbulb, Globe, ChevronDown, Scroll, Trophy, Clock } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import EnrollmentForm from '@/components/EnrollmentForm';
 import { 
@@ -10,15 +11,15 @@ import {
   NavigationMenuLink,
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
-import { GlassNavigation } from '@/components/ui/glass-navigation';
-import { MegaMenu } from '@/components/ui/mega-menu';
-import { AnimatedHero } from '@/components/ui/animated-hero';
-import { InteractiveCard } from '@/components/ui/interactive-card';
+import { AcademicNavigation } from '@/components/ui/academic-navigation';
+import { VintageHero } from '@/components/ui/vintage-hero';
+import { VintageCard } from '@/components/ui/vintage-card';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const [showEnrollmentForm, setShowEnrollmentForm] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [animatedElements, setAnimatedElements] = useState(new Set());
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,23 +32,23 @@ const LandingPage = () => {
 
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
+      threshold: 0.2,
       rootMargin: '0px 0px -10% 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
-          entry.target.classList.remove('opacity-0');
+          entry.target.classList.add('animate');
+          setAnimatedElements(prev => new Set([...prev, entry.target.id]));
           observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    const sections = document.querySelectorAll('.animate-on-scroll');
-    sections.forEach(section => {
-      section.classList.add('opacity-0');
+    const sections = document.querySelectorAll('.fade-in-up, .stagger-children');
+    sections.forEach((section, index) => {
+      if (!section.id) section.id = `section-${index}`;
       observer.observe(section);
     });
 
@@ -58,136 +59,44 @@ const LandingPage = () => {
     };
   }, []);
 
-  // About menu items
-  const aboutMenuItems = [
-    {
-      icon: <School className="h-5 w-5" />,
-      title: "Our History",
-      description: "Founded in 1985, learn about our journey of educational excellence"
-    },
-    {
-      icon: <Target className="h-5 w-5" />,
-      title: "Mission & Values",
-      description: "Discover our commitment to nurturing future leaders"
-    },
-    {
-      icon: <Users className="h-5 w-5" />,
-      title: "Staff & Faculty",
-      description: "Meet our dedicated team of educators and professionals"
-    },
-    {
-      icon: <Award className="h-5 w-5" />,
-      title: "Accreditations",
-      description: "Our recognized standards and certifications"
-    }
-  ];
-
-  // Academics menu items
-  const academicsMenuItems = [
-    {
-      icon: <BookOpen className="h-5 w-5" />,
-      title: "Elementary Programs",
-      description: "Building strong foundations for lifelong learning"
-    },
-    {
-      icon: <GraduationCap className="h-5 w-5" />,
-      title: "Middle School",
-      description: "Supporting growth through early adolescence"
-    },
-    {
-      icon: <Star className="h-5 w-5" />,
-      title: "High School",
-      description: "Preparing students for college and career success"
-    },
-    {
-      icon: <Calendar className="h-5 w-5" />,
-      title: "Academic Calendar",
-      description: "Important dates and academic schedules"
-    }
-  ];
-
-  // Campus Life menu items
-  const campusLifeMenuItems = [
-    {
-      icon: <Heart className="h-5 w-5" />,
-      title: "Clubs & Activities",
-      description: "Explore extracurricular opportunities"
-    },
-    {
-      icon: <Users className="h-5 w-5" />,
-      title: "Athletics",
-      description: "Competitive sports and physical education"
-    },
-    {
-      icon: <Calendar className="h-5 w-5" />,
-      title: "Events",
-      description: "Community gatherings and celebrations"
-    },
-    {
-      icon: <Globe className="h-5 w-5" />,
-      title: "Community Service",
-      description: "Making a difference in our community"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-gray-900 dark:via-amber-950 dark:to-yellow-950 transition-colors duration-300">
       <EnrollmentForm open={showEnrollmentForm} onOpenChange={setShowEnrollmentForm} />
       
-      {/* Announcement Banner */}
-      <div className="bg-gradient-to-r from-primary to-purple-600 text-white py-3 px-4 text-center text-sm md:text-base relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/10 transform skew-y-1"></div>
-        <p className="relative z-10 font-medium">
-          🎉 Now accepting applications for Fall 2025 semester! 
-          <a href="#" className="underline font-bold ml-2 hover:text-yellow-300 transition-colors">Apply Today</a>
+      {/* Academic Announcement Banner */}
+      <div className="vintage-nav text-white py-4 px-4 text-center text-sm md:text-base relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/20 via-yellow-900/20 to-amber-900/20"></div>
+        <p className="relative z-10 font-academic font-semibold vintage-glow">
+          📚 Celebrating 40 Years of Academic Excellence - Established 1985 📚
         </p>
       </div>
       
-      {/* Modern Glass Navigation */}
-      <GlassNavigation isScrolled={isScrolled}>
+      {/* Academic Navigation */}
+      <AcademicNavigation isScrolled={isScrolled}>
         <div className="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <School className="h-8 w-8 text-white drop-shadow-lg" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+          <div className="flex items-center space-x-4">
+            <div className="academic-seal w-12 h-12 flex items-center justify-center">
+              <School className="h-6 w-6 text-yellow-300" />
             </div>
-            <h1 className="text-2xl font-bold text-white font-serif drop-shadow-lg">Northside Academy</h1>
+            <div className="text-white">
+              <h1 className="text-xl md:text-2xl font-bold font-academic vintage-glow">NORTHSIDE ACADEMY</h1>
+              <p className="text-xs text-yellow-200 font-academic">Est. 1985 • Excellence in Education</p>
+            </div>
           </div>
           
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-8">
             <NavigationMenu>
               <NavigationMenuList>
-                <MegaMenu 
-                  title="About" 
-                  items={aboutMenuItems}
-                  featured={{
-                    title: "Campus Tour",
-                    description: "Experience our beautiful campus virtually",
-                    image: "https://images.unsplash.com/photo-1562774053-701939374585",
-                    href: "#"
-                  }}
-                />
-                <MegaMenu 
-                  title="Academics" 
-                  items={academicsMenuItems}
-                  featured={{
-                    title: "STEM Excellence",
-                    description: "Award-winning science and technology programs",
-                    image: "https://images.unsplash.com/photo-1588072432836-e10032774350",
-                    href: "#"
-                  }}
-                />
-                <MegaMenu 
-                  title="Campus Life" 
-                  items={campusLifeMenuItems}
-                  featured={{
-                    title: "Student Activities",
-                    description: "Over 50 clubs and organizations to join",
-                    image: "https://images.unsplash.com/photo-1511225317751-5c2d61819d58",
-                    href: "#"
-                  }}
-                />
-                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/90 hover:text-white hover:bg-white/10`} href="#">
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/90 hover:text-yellow-200 hover:bg-white/10 font-academic transition-all duration-300`} href="#">
+                  About Us
+                </NavigationMenuLink>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/90 hover:text-yellow-200 hover:bg-white/10 font-academic transition-all duration-300`} href="#">
+                  Academics
+                </NavigationMenuLink>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/90 hover:text-yellow-200 hover:bg-white/10 font-academic transition-all duration-300`} href="#">
+                  Student Life
+                </NavigationMenuLink>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-white/90 hover:text-yellow-200 hover:bg-white/10 font-academic transition-all duration-300`} href="#">
                   Admissions
                 </NavigationMenuLink>
               </NavigationMenuList>
@@ -198,60 +107,59 @@ const LandingPage = () => {
             <ThemeToggle />
             <Button 
               onClick={() => setShowEnrollmentForm(true)}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 hover:scale-105 transition-all shadow-lg hover:shadow-xl text-white border-0"
+              className="academic-button px-4 py-2 text-sm vintage-hover"
             >
               Apply Now
             </Button>
             <Button 
               onClick={() => navigate('/login')}
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/30 hover:border-white/50 hover:scale-105 transition-all backdrop-blur-sm"
+              className="bg-yellow-600 hover:bg-yellow-700 text-white border-2 border-yellow-800 vintage-hover transition-all duration-300"
               variant="outline"
             >
-              Portal Login <ArrowRight className="ml-2 h-4 w-4" />
+              Portal <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
         </div>
-      </GlassNavigation>
+      </AcademicNavigation>
 
-      {/* Immersive Hero Section */}
-      <AnimatedHero>
+      {/* Vintage Hero Section */}
+      <VintageHero>
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="max-w-5xl mx-auto">
-            <div className="mb-8 animate-fade-in">
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-white/90 text-sm mb-6">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <span>Excellence in Education Since 1985</span>
-                <Star className="h-4 w-4 text-yellow-400" />
+          <div className="max-w-6xl mx-auto">
+            {/* Principal's Welcome Badge */}
+            <div className="mb-8 fade-in-up">
+              <div className="inline-flex items-center gap-3 vintage-border bg-white/90 backdrop-blur-sm rounded-none px-6 py-3 text-amber-900 text-sm mb-6">
+                <Scroll className="h-5 w-5 text-amber-700" />
+                <span className="font-academic font-semibold">Welcome from Principal Margaret Thompson</span>
+                <Scroll className="h-5 w-5 text-amber-700" />
               </div>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight animate-fade-in font-serif mb-6">
-              <span className="bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
-                Inspiring Minds,
-              </span>
-              <br />
-              <span className="bg-gradient-to-r from-yellow-200 via-orange-200 to-red-200 bg-clip-text text-transparent">
-                Shaping Futures
-              </span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-amber-900 dark:text-amber-100 leading-tight mb-6 font-academic typewriter">
+              NORTHSIDE ACADEMY
             </h1>
             
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-12 animate-fade-in delay-300 leading-relaxed">
-              Join a transformative educational journey where innovation meets tradition, 
-              and every student is empowered to reach their full potential.
+            <div className="text-xl md:text-2xl text-amber-800 dark:text-amber-200 font-academic mb-4 vintage-glow">
+              "Tradition • Excellence • Character"
+            </div>
+            
+            <p className="text-lg md:text-xl text-amber-700 dark:text-amber-300 max-w-4xl mx-auto mb-12 leading-relaxed font-academic fade-in-up">
+              For four decades, we have nurtured young minds in the classical tradition of learning, 
+              where academic rigor meets moral character, preparing students for lives of purpose and service.
             </p>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16 animate-fade-in delay-500">
+            <div className="flex flex-col sm:flex-row justify-center gap-6 mb-16 fade-in-up stagger-children">
               <Button 
                 onClick={() => setShowEnrollmentForm(true)}
-                className="text-lg px-8 py-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 hover:scale-105 transition-all shadow-2xl hover:shadow-green-500/25 text-white border-0 group"
+                className="text-lg px-8 py-6 academic-button"
                 size="lg"
               >
-                Start Your Journey
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                Begin Your Journey
+                <BookOpen className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 onClick={() => navigate('/login')}
-                className="text-lg px-8 py-6 bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 hover:border-white/50 hover:scale-105 transition-all backdrop-blur-sm"
+                className="text-lg px-8 py-6 bg-amber-600 hover:bg-amber-700 text-white border-2 border-amber-800 vintage-hover transition-all duration-300"
                 variant="outline"
                 size="lg"
               >
@@ -260,477 +168,405 @@ const LandingPage = () => {
             </div>
 
             {/* Scroll Indicator */}
-            <div className="animate-bounce">
-              <ChevronDown className="h-8 w-8 text-white/60 mx-auto" />
+            <div className="animate-bounce fade-in-up">
+              <ChevronDown className="h-8 w-8 text-amber-600 mx-auto" />
             </div>
           </div>
         </div>
-      </AnimatedHero>
+      </VintageHero>
 
-      {/* Enhanced About Section */}
-      <section className="py-20 bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 transition-colors duration-300 animate-on-scroll">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium mb-4">
-              <Lightbulb className="h-4 w-4" />
-              About Our Institution
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-serif">
-              Where Excellence Meets Innovation
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-purple-600 mx-auto mb-8"></div>
-            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              For over three decades, Northside Academy has been at the forefront of educational innovation, 
-              nurturing generations of leaders, thinkers, and changemakers.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <InteractiveCard className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-200/50 text-center p-8" hover glow>
-              <div className="h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform">
-                <GraduationCap className="h-10 w-10 text-white" />
+      {/* Principal's Welcome Section */}
+      <section className="py-20 bg-gradient-to-br from-white via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-amber-950 dark:to-yellow-950 transition-colors duration-300">
+        <div className="container mx-auto px-4 md:px-6 fade-in-up">
+          <div className="max-w-6xl mx-auto">
+            <VintageCard className="overflow-hidden" academic>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+                <div className="lg:col-span-2">
+                  <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 rounded-full px-4 py-2 text-sm font-medium mb-6">
+                    <Award className="h-4 w-4" />
+                    From the Principal's Desk
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-amber-900 dark:text-amber-100 mb-6 font-academic">
+                    A Message from Our Principal
+                  </h2>
+                  <p className="text-lg text-amber-800 dark:text-amber-200 leading-relaxed font-academic mb-6">
+                    "Welcome to Northside Academy, where we believe that every student possesses unique gifts 
+                    waiting to be discovered and nurtured. Our time-honored traditions of academic excellence, 
+                    moral development, and community service prepare our students not just for college, 
+                    but for meaningful lives of leadership and contribution."
+                  </p>
+                  <div className="border-l-4 border-amber-600 pl-6">
+                    <p className="text-amber-700 dark:text-amber-300 italic font-academic">
+                      "Education is not the filling of a pail, but the lighting of a fire." - W.B. Yeats
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center">
+                  <div className="academic-seal w-48 h-48 flex items-center justify-center">
+                    <div className="text-center text-white">
+                      <GraduationCap className="h-16 w-16 mx-auto mb-2" />
+                      <div className="text-sm font-academic font-bold">NORTHSIDE</div>
+                      <div className="text-xs">EST. 1985</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4 dark:text-white font-serif">Our Mission</h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                To provide a transformative educational experience that nurtures intellect, creativity, 
-                and character, preparing students to be responsible global citizens.
-              </p>
-            </InteractiveCard>
-            
-            <InteractiveCard className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-200/50 text-center p-8" hover glow>
-              <div className="h-20 w-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform">
-                <BookOpen className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 dark:text-white font-serif">Academic Excellence</h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                Our rigorous curriculum challenges students while fostering critical thinking skills 
-                and a lifelong love of learning for success in college and beyond.
-              </p>
-            </InteractiveCard>
-            
-            <InteractiveCard className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-200/50 text-center p-8" hover glow>
-              <div className="h-20 w-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform">
-                <Users className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 dark:text-white font-serif">Community</h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                We foster an inclusive environment where students from diverse backgrounds 
-                grow together, forming lasting friendships and meaningful connections.
-              </p>
-            </InteractiveCard>
+            </VintageCard>
           </div>
         </div>
       </section>
 
-      {/* Programs & Curriculum */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-600 transition-colors duration-300 animate-on-scroll">
+      {/* Academic Pillars */}
+      <section className="py-20 parchment-bg fade-in-up">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium mb-4">
-              <BookOpen className="h-4 w-4" />
-              Academic Excellence
+            <div className="inline-flex items-center gap-2 bg-amber-800 text-yellow-100 rounded-none px-6 py-3 text-sm font-medium mb-6 vintage-border">
+              <Trophy className="h-4 w-4" />
+              Our Foundation
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-serif">
-              Comprehensive Learning Programs
+            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 dark:text-amber-100 mb-6 font-academic">
+              The Four Pillars of Excellence
             </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-purple-600 mx-auto mb-8"></div>
-            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              Our innovative programs are designed to nurture the whole student - intellectually, 
-              socially, and emotionally - preparing them for tomorrow's challenges.
-            </p>
+            <div className="h-1 w-32 bg-gradient-to-r from-amber-600 to-yellow-600 mx-auto mb-8"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-            <InteractiveCard className="bg-white dark:bg-gray-800 overflow-hidden shadow-xl" hover>
-              <div className="h-56 relative overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b" 
-                  alt="Elementary Education" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="bg-blue-500 rounded-lg p-2 inline-block mb-2">
-                    <School className="h-6 w-6" />
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16 stagger-children">
+            <VintageCard className="text-center p-8" hover academic>
+              <div className="academic-seal w-20 h-20 flex items-center justify-center mb-6 mx-auto">
+                <BookOpen className="h-10 w-10 text-yellow-300" />
               </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 dark:text-white">Elementary School</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Building strong foundations with nurturing approaches to core academics, 
-                  critical thinking, and creative expression.
-                </p>
-                <a href="#" className="text-primary dark:text-blue-400 font-medium hover:underline flex items-center group">
-                  Discover More 
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </InteractiveCard>
+              <h3 className="text-2xl font-bold mb-4 text-amber-900 dark:text-amber-100 font-academic">Academic Rigor</h3>
+              <p className="text-amber-700 dark:text-amber-300 leading-relaxed font-academic">
+                Challenging curriculum rooted in classical education principles, 
+                fostering critical thinking and intellectual curiosity.
+              </p>
+            </VintageCard>
             
-            <InteractiveCard className="bg-white dark:bg-gray-800 overflow-hidden shadow-xl" hover>
-              <div className="h-56 relative overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45" 
-                  alt="Middle School Education" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="bg-green-500 rounded-lg p-2 inline-block mb-2">
-                    <Users className="h-6 w-6" />
-                  </div>
-                </div>
+            <VintageCard className="text-center p-8" hover academic>
+              <div className="academic-seal w-20 h-20 flex items-center justify-center mb-6 mx-auto">
+                <Heart className="h-10 w-10 text-yellow-300" />
               </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 dark:text-white">Middle School</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Supporting students through early adolescence with engaging curriculum 
-                  and comprehensive personal development programs.
-                </p>
-                <a href="#" className="text-primary dark:text-blue-400 font-medium hover:underline flex items-center group">
-                  Explore Programs 
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </InteractiveCard>
+              <h3 className="text-2xl font-bold mb-4 text-amber-900 dark:text-amber-100 font-academic">Character Formation</h3>
+              <p className="text-amber-700 dark:text-amber-300 leading-relaxed font-academic">
+                Developing moral character, integrity, and ethical leadership 
+                through mentorship and community service.
+              </p>
+            </VintageCard>
             
-            <InteractiveCard className="bg-white dark:bg-gray-800 overflow-hidden shadow-xl" hover>
-              <div className="h-56 relative overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1" 
-                  alt="High School Education" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="bg-purple-500 rounded-lg p-2 inline-block mb-2">
-                    <GraduationCap className="h-6 w-6" />
-                  </div>
-                </div>
+            <VintageCard className="text-center p-8" hover academic>
+              <div className="academic-seal w-20 h-20 flex items-center justify-center mb-6 mx-auto">
+                <Users className="h-10 w-10 text-yellow-300" />
               </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 dark:text-white">High School</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Preparing students for college and beyond with advanced academics, 
-                  leadership opportunities, and personalized guidance.
-                </p>
-                <a href="#" className="text-primary dark:text-blue-400 font-medium hover:underline flex items-center group">
-                  View Curriculum 
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+              <h3 className="text-2xl font-bold mb-4 text-amber-900 dark:text-amber-100 font-academic">Community Spirit</h3>
+              <p className="text-amber-700 dark:text-amber-300 leading-relaxed font-academic">
+                Building lasting relationships and school pride through 
+                traditions, events, and collaborative learning.
+              </p>
+            </VintageCard>
+            
+            <VintageCard className="text-center p-8" hover academic>
+              <div className="academic-seal w-20 h-20 flex items-center justify-center mb-6 mx-auto">
+                <Target className="h-10 w-10 text-yellow-300" />
               </div>
-            </InteractiveCard>
+              <h3 className="text-2xl font-bold mb-4 text-amber-900 dark:text-amber-100 font-academic">Future Readiness</h3>
+              <p className="text-amber-700 dark:text-amber-300 leading-relaxed font-academic">
+                Preparing students for success in higher education and 
+                meaningful careers through comprehensive guidance.
+              </p>
+            </VintageCard>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Testimonials */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-700 dark:via-gray-600 dark:to-gray-500 transition-colors duration-300 animate-on-scroll">
+      {/* Academic Programs */}
+      <section className="py-20 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-gray-800 dark:via-amber-950 dark:to-yellow-950 transition-colors duration-300 fade-in-up">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium mb-4">
-              <Heart className="h-4 w-4" />
-              Community Voices
+            <div className="inline-flex items-center gap-2 bg-amber-800 text-yellow-100 rounded-none px-6 py-3 text-sm font-medium mb-6 vintage-border">
+              <Scroll className="h-4 w-4" />
+              Academic Programs
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-serif">
-              What Our Community Says
+            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 dark:text-amber-100 mb-6 font-academic">
+              Time-Honored Educational Excellence
             </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-purple-600 mx-auto"></div>
+            <div className="h-1 w-32 bg-gradient-to-r from-amber-600 to-yellow-600 mx-auto mb-8"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <InteractiveCard className="bg-white dark:bg-gray-800 p-8 shadow-xl" hover glow>
-              <div className="flex items-center mb-6">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-4 shadow-lg">
-                  <span className="font-bold text-white text-lg">AS</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 stagger-children">
+            <VintageCard className="overflow-hidden shadow-xl" hover>
+              <div className="h-56 relative overflow-hidden bg-gradient-to-br from-amber-100 to-yellow-200">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="academic-seal w-32 h-32 flex items-center justify-center opacity-80">
+                    <School className="h-16 w-16 text-yellow-300" />
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-lg dark:text-white">Amanda Stevens</p>
-                  <p className="text-sm text-primary font-medium">Parent</p>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="vintage-border bg-white/90 p-2 text-center">
+                    <div className="text-amber-800 font-academic font-bold text-sm">ELEMENTARY</div>
+                    <div className="text-amber-600 text-xs">Grades K-5</div>
+                  </div>
                 </div>
               </div>
-              <p className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
-                "The dedicated teachers at Northside Academy have made a tremendous difference 
-                in my daughter's academic journey. The individualized attention and supportive 
-                environment have helped her thrive in ways I never expected."
-              </p>
-            </InteractiveCard>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-3 text-amber-900 dark:text-amber-100 font-academic">Elementary School</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Building strong foundations in reading, writing, mathematics, and character 
+                  through nurturing guidance and classical methodology.
+                </p>
+                <Button variant="outline" className="vintage-hover border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white">
+                  Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </VintageCard>
             
-            <InteractiveCard className="bg-white dark:bg-gray-800 p-8 shadow-xl" hover glow>
-              <div className="flex items-center mb-6">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mr-4 shadow-lg">
-                  <span className="font-bold text-white text-lg">EW</span>
+            <VintageCard className="overflow-hidden shadow-xl" hover>
+              <div className="h-56 relative overflow-hidden bg-gradient-to-br from-green-100 to-emerald-200">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="academic-seal w-32 h-32 flex items-center justify-center opacity-80">
+                    <Users className="h-16 w-16 text-yellow-300" />
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-lg dark:text-white">Ethan Williams</p>
-                  <p className="text-sm text-primary font-medium">Class of 2024</p>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="vintage-border bg-white/90 p-2 text-center">
+                    <div className="text-green-800 font-academic font-bold text-sm">MIDDLE SCHOOL</div>
+                    <div className="text-green-600 text-xs">Grades 6-8</div>
+                  </div>
                 </div>
               </div>
-              <p className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
-                "Being a student at Northside has been transformative. The challenging curriculum 
-                pushed me to excel academically, while the supportive community helped me discover 
-                my passion for science and robotics."
-              </p>
-            </InteractiveCard>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-3 text-amber-900 dark:text-amber-100 font-academic">Middle School</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Guiding students through adolescence with comprehensive academics, 
+                  mentorship programs, and character development initiatives.
+                </p>
+                <Button variant="outline" className="vintage-hover border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white">
+                  Explore Programs <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </VintageCard>
             
-            <InteractiveCard className="bg-white dark:bg-gray-800 p-8 shadow-xl" hover glow>
-              <div className="flex items-center mb-6">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mr-4 shadow-lg">
-                  <span className="font-bold text-white text-lg">DR</span>
+            <VintageCard className="overflow-hidden shadow-xl" hover>
+              <div className="h-56 relative overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-200">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="academic-seal w-32 h-32 flex items-center justify-center opacity-80">
+                    <GraduationCap className="h-16 w-16 text-yellow-300" />
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-lg dark:text-white">Dr. Rebecca Chen</p>
-                  <p className="text-sm text-primary font-medium">Science Department Chair</p>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="vintage-border bg-white/90 p-2 text-center">
+                    <div className="text-purple-800 font-academic font-bold text-sm">HIGH SCHOOL</div>
+                    <div className="text-purple-600 text-xs">Grades 9-12</div>
+                  </div>
                 </div>
               </div>
-              <p className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
-                "Teaching at Northside Academy has been the highlight of my career. The collaborative 
-                faculty environment and resources available allow us to create innovative learning 
-                experiences that truly engage students."
-              </p>
-            </InteractiveCard>
-          </div>
-          
-          {/* Enhanced Accreditations */}
-          <div className="mt-20 text-center">
-            <h3 className="text-2xl font-bold mb-8 dark:text-white">Accreditations & Recognition</h3>
-            <div className="flex flex-wrap justify-center gap-6 items-center">
-              <InteractiveCard className="bg-white dark:bg-gray-800 p-6 shadow-lg" hover>
-                <div className="flex items-center gap-3">
-                  <Award className="h-6 w-6 text-primary" />
-                  <p className="font-semibold">National Education Association</p>
-                </div>
-              </InteractiveCard>
-              <InteractiveCard className="bg-white dark:bg-gray-800 p-6 shadow-lg" hover>
-                <div className="flex items-center gap-3">
-                  <Star className="h-6 w-6 text-yellow-500" />
-                  <p className="font-semibold">STEM Excellence Award</p>
-                </div>
-              </InteractiveCard>
-              <InteractiveCard className="bg-white dark:bg-gray-800 p-6 shadow-lg" hover>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-500" />
-                  <p className="font-semibold">Regional Accreditation Board</p>
-                </div>
-              </InteractiveCard>
-            </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-3 text-amber-900 dark:text-amber-100 font-academic">High School</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Preparing scholars for university and life with rigorous academics, 
+                  leadership opportunities, and comprehensive college counseling.
+                </p>
+                <Button variant="outline" className="vintage-hover border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white">
+                  View Curriculum <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </VintageCard>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Events Section */}
-      <section className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300 animate-on-scroll">
+      {/* School News & Events */}
+      <section className="py-20 parchment-bg fade-in-up">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 bg-amber-800 text-yellow-100 rounded-none px-6 py-3 text-sm font-medium mb-6 vintage-border">
               <Calendar className="h-4 w-4" />
-              School Events
+              School Calendar
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-serif">
-              Upcoming Events
+            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 dark:text-amber-100 mb-6 font-academic">
+              Upcoming Traditions & Events
             </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-purple-600 mx-auto"></div>
+            <div className="h-1 w-32 bg-gradient-to-r from-amber-600 to-yellow-600 mx-auto"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <InteractiveCard className="overflow-hidden shadow-xl" hover>
-              <div className="bg-gradient-to-r from-primary to-blue-600 text-white p-4 text-center relative">
-                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-children">
+            <VintageCard className="overflow-hidden" hover academic>
+              <div className="vintage-nav text-white p-6 text-center relative">
+                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-2">
                   <Calendar className="h-4 w-4" />
                 </div>
-                <p className="text-sm font-medium opacity-90">MAY</p>
-                <p className="text-2xl font-bold">15</p>
-                <p className="text-sm opacity-90">2025</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-700 dark:to-gray-600">
-                <h3 className="font-bold text-xl mb-3 dark:text-white">Spring Arts Festival</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Celebrate creativity with student performances, art exhibitions, and interactive workshops.
-                </p>
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>3:00 PM - 7:00 PM</span>
+                <div className="font-academic">
+                  <p className="text-sm font-medium opacity-90">MAY</p>
+                  <p className="text-3xl font-bold">15</p>
+                  <p className="text-sm opacity-90">2025</p>
                 </div>
               </div>
-            </InteractiveCard>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-gray-700 dark:to-gray-600">
+                <h3 className="font-bold text-xl mb-3 text-amber-900 dark:text-amber-100 font-academic">Annual Spring Concert</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Our distinguished choir and orchestra perform classical masterpieces in the historic auditorium.
+                </p>
+                <div className="flex items-center text-sm text-amber-600 dark:text-amber-400">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span className="font-academic">7:00 PM - Great Hall</span>
+                </div>
+              </div>
+            </VintageCard>
             
-            <InteractiveCard className="overflow-hidden shadow-xl" hover>
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 text-center relative">
-                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-1">
+            <VintageCard className="overflow-hidden" hover academic>
+              <div className="vintage-nav text-white p-6 text-center relative">
+                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-2">
                   <Calendar className="h-4 w-4" />
                 </div>
-                <p className="text-sm font-medium opacity-90">JUN</p>
-                <p className="text-2xl font-bold">02</p>
-                <p className="text-sm opacity-90">2025</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-700 dark:to-gray-600">
-                <h3 className="font-bold text-xl mb-3 dark:text-white">Science Fair</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Students showcase innovative research projects and scientific discoveries.
-                </p>
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>9:00 AM - 3:00 PM</span>
+                <div className="font-academic">
+                  <p className="text-sm font-medium opacity-90">JUN</p>
+                  <p className="text-3xl font-bold">02</p>
+                  <p className="text-sm opacity-90">2025</p>
                 </div>
               </div>
-            </InteractiveCard>
+              <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-700 dark:to-gray-600">
+                <h3 className="font-bold text-xl mb-3 text-amber-900 dark:text-amber-100 font-academic">Founder's Day Celebration</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Honoring our heritage with traditional ceremonies, awards, and community fellowship.
+                </p>
+                <div className="flex items-center text-sm text-amber-600 dark:text-amber-400">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span className="font-academic">All Day - Campus Wide</span>
+                </div>
+              </div>
+            </VintageCard>
             
-            <InteractiveCard className="overflow-hidden shadow-xl" hover>
-              <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 text-center relative">
-                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-1">
+            <VintageCard className="overflow-hidden" hover academic>
+              <div className="vintage-nav text-white p-6 text-center relative">
+                <div className="absolute top-2 right-2 bg-white/20 rounded-full p-2">
                   <Calendar className="h-4 w-4" />
                 </div>
-                <p className="text-sm font-medium opacity-90">JUN</p>
-                <p className="text-2xl font-bold">15</p>
-                <p className="text-sm opacity-90">2025</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-gray-700 dark:to-gray-600">
-                <h3 className="font-bold text-xl mb-3 dark:text-white">Graduation Ceremony</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Celebrate the achievements of the Class of 2025 graduates.
-                </p>
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>10:00 AM - 12:00 PM</span>
+                <div className="font-academic">
+                  <p className="text-sm font-medium opacity-90">JUN</p>
+                  <p className="text-3xl font-bold">15</p>
+                  <p className="text-sm opacity-90">2025</p>
                 </div>
               </div>
-            </InteractiveCard>
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button variant="outline" className="hover:bg-primary hover:text-white border-2 px-8 py-3 text-lg hover:scale-105 transition-all">
-              View Full Calendar <Calendar className="ml-2 h-5 w-5" />
-            </Button>
+              <div className="p-6 bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600">
+                <h3 className="font-bold text-xl mb-3 text-amber-900 dark:text-amber-100 font-academic">Commencement Ceremony</h3>
+                <p className="text-amber-700 dark:text-amber-300 mb-4 leading-relaxed font-academic">
+                  Celebrating the achievements of our graduating class with time-honored traditions.
+                </p>
+                <div className="flex items-center text-sm text-amber-600 dark:text-amber-400">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span className="font-academic">10:00 AM - Memorial Garden</span>
+                </div>
+              </div>
+            </VintageCard>
           </div>
         </div>
       </section>
 
-      {/* Enhanced CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary via-blue-600 to-purple-600 text-white animate-on-scroll relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0">
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`
-              }}
-            ></div>
-          ))}
-        </div>
+      {/* Call to Action */}
+      <section className="py-20 vintage-nav text-white relative overflow-hidden fade-in-up">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/30 via-yellow-900/20 to-amber-900/30"></div>
         <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 font-serif">
-            Ready to Begin Your Journey?
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 font-academic vintage-glow">
+            Join Our Distinguished Legacy
           </h2>
-          <p className="max-w-3xl mx-auto text-xl mb-12 opacity-90 leading-relaxed">
-            Join our vibrant learning community and discover the difference that 
-            personalized education, innovative teaching, and a supportive environment can make.
+          <p className="max-w-3xl mx-auto text-xl mb-12 opacity-90 leading-relaxed font-academic">
+            Become part of a tradition that has shaped leaders, scholars, and citizens for four decades. 
+            Your journey of academic excellence and character formation begins here.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 stagger-children">
             <Button 
-              variant="outline" 
               onClick={() => setShowEnrollmentForm(true)} 
-              className="border-2 border-white text-white hover:bg-white hover:text-primary px-10 py-4 text-lg hover:scale-105 transition-all bg-transparent backdrop-blur-sm"
+              className="academic-button text-lg px-10 py-4"
               size="lg"
             >
-              Apply for Admission
+              Begin Your Application
             </Button>
             <Button 
-              variant="outline" 
               onClick={() => navigate('/login')} 
-              className="border-2 border-white/50 text-white hover:bg-white/10 hover:border-white px-10 py-4 text-lg hover:scale-105 transition-all bg-transparent backdrop-blur-sm"
+              className="bg-yellow-600 hover:bg-yellow-700 text-white border-2 border-yellow-800 vintage-hover transition-all duration-300 text-lg px-10 py-4"
+              variant="outline"
               size="lg"
             >
-              Student Portal Login
+              Access Student Portal
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="bg-gray-900 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black"></div>
+      {/* Academic Footer */}
+      <footer className="bg-gradient-to-br from-amber-900 via-yellow-900 to-amber-800 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-yellow-900/90 to-amber-800/90"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="flex flex-col lg:flex-row justify-between items-start gap-12">
             <div className="lg:w-1/3">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="relative">
-                  <School className="h-8 w-8 text-primary" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="academic-seal w-16 h-16 flex items-center justify-center">
+                  <School className="h-8 w-8 text-yellow-300" />
                 </div>
-                <h3 className="text-2xl font-bold font-serif">Northside Academy</h3>
+                <div>
+                  <h3 className="text-2xl font-bold font-academic">NORTHSIDE ACADEMY</h3>
+                  <p className="text-yellow-200 text-sm font-academic">Excellence Since 1985</p>
+                </div>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-6 text-lg">
-                Providing excellence in education since 1985. Our students are prepared 
-                for success in college, career, and life through innovative learning experiences.
+              <p className="text-amber-100 leading-relaxed mb-6 text-lg font-academic">
+                Continuing the noble tradition of classical education, where wisdom meets wonder 
+                and students discover their calling to lead and serve.
               </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center hover:bg-primary/30 transition-colors cursor-pointer">
-                  <span className="text-primary font-bold">f</span>
-                </div>
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center hover:bg-primary/30 transition-colors cursor-pointer">
-                  <span className="text-primary font-bold">t</span>
-                </div>
-                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center hover:bg-primary/30 transition-colors cursor-pointer">
-                  <span className="text-primary font-bold">in</span>
-                </div>
+              <div className="vintage-border bg-amber-800/30 p-4 rounded-none">
+                <p className="text-yellow-200 italic font-academic text-center">
+                  "Per aspera ad astra" - Through hardships to the stars
+                </p>
               </div>
             </div>
             
             <div className="lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-8">
               <div>
-                <h4 className="text-xl font-bold mb-6 text-primary">Quick Links</h4>
-                <ul className="space-y-3">
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">About Us</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Academics</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Admissions</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Campus Life</a></li>
+                <h4 className="text-xl font-bold mb-6 text-yellow-200 font-academic">Academics</h4>
+                <ul className="space-y-3 font-academic">
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Elementary Program</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Middle School</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Upper School</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Academic Calendar</a></li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-xl font-bold mb-6 text-primary">Resources</h4>
-                <ul className="space-y-3">
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">School Calendar</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Student Handbook</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Career Opportunities</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors hover:underline">Alumni Network</a></li>
+                <h4 className="text-xl font-bold mb-6 text-yellow-200 font-academic">Community</h4>
+                <ul className="space-y-3 font-academic">
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Alumni Association</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Parent Council</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">School Events</a></li>
+                  <li><a href="#" className="text-amber-100 hover:text-white transition-colors hover:underline">Volunteer Opportunities</a></li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-xl font-bold mb-6 text-primary">Contact</h4>
-                <ul className="space-y-3 text-gray-300">
+                <h4 className="text-xl font-bold mb-6 text-yellow-200 font-academic">Contact</h4>
+                <ul className="space-y-3 text-amber-100 font-academic">
                   <li className="flex items-start gap-2">
-                    <span className="text-primary mt-1">📧</span>
-                    <span>info@northsideacademy.edu</span>
+                    <span className="text-yellow-300 mt-1">📧</span>
+                    <span>admissions@northsideacademy.edu</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-primary mt-1">📞</span>
-                    <span>+1 (555) 123-4567</span>
+                    <span className="text-yellow-300 mt-1">📞</span>
+                    <span>(555) 123-4567</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-primary mt-1">📍</span>
-                    <span>123 Education Ave, Learning City</span>
+                    <span className="text-yellow-300 mt-1">📍</span>
+                    <span>123 Academy Lane<br />Traditions Hall<br />Learning City, State 12345</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
           
-          <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-center md:text-left">
-              © 2025 Northside Academy. All rights reserved. Built with excellence in mind.
+          <div className="vintage-border bg-amber-800/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-amber-200 text-center md:text-left font-academic">
+              © 2025 Northside Academy. All rights reserved. A tradition of excellence continues.
             </p>
-            <div className="mt-4 md:mt-0 flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Accessibility</a>
+            <div className="mt-4 md:mt-0 flex space-x-6 font-academic">
+              <a href="#" className="text-amber-200 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="text-amber-200 hover:text-white transition-colors">Honor Code</a>
+              <a href="#" className="text-amber-200 hover:text-white transition-colors">Accessibility</a>
             </div>
           </div>
         </div>
